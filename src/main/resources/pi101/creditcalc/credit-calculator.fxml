@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+
+<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="pi101.creditcalc.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label alignment="CENTER" fx:id="welcomeText"/>
+
+    <Label text="Сумма кредита"/>
+    <HBox spacing="20.0">
+        <TextField fx:id="amountTextField" prefWidth="60"/>
+        <Label text="Руб."/>
+    </HBox>
+
+    <Slider fx:id="amountSlider" min="0" max="500000" value="0" showTickLabels="true" minorTickCount="4" showTickMarks="true" majorTickUnit="50000"/>
+
+    <Label text="Процентная ставка"/>
+    <HBox spacing="20.0">
+        <TextField fx:id="rateTextField" prefWidth="40"/>
+        <Label text="Процент."/>
+    </HBox>
+    <Slider fx:id="rateSlider" min="10" max="30" value="10" showTickLabels="true" showTickMarks="true" minorTickCount="4" majorTickUnit="5" snapToTicks="true" blockIncrement="0.5"/>
+
+    <Label text="Срок кредита"/>
+    <HBox spacing="20.0">
+        <TextField fx:id="termTextField" prefWidth="30"/>
+        <Label text="Мес."/>
+    </HBox>
+
+    <Slider fx:id="termSlider" min="0" max="36" value="0" showTickLabels="true" minorTickCount="5" showTickMarks="true" majorTickUnit="6"/>
+
+
+    <VBox alignment="BOTTOM_CENTER">
+        <Button fx:id="calculateButton" text="Расчитать" onAction="#onCalculateButtonClick"/>
+        <Label fx:id="monthlyPaymentLabel"/>
+    </VBox>
+</VBox>
