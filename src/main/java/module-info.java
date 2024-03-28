@@ -13,4 +13,6 @@ module pi101.creditcalc {
 
     opens pi101.creditcalc to javafx.fxml;
     exports pi101.creditcalc;
+    exports pi101.creditcalc.controller;
+    opens pi101.creditcalc.controller to javafx.fxml;
 }

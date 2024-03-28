@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TextField?>
 
-<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="pi101.creditcalc.HelloController">
+<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="pi101.creditcalc.controller.CalcController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
@@ -27,7 +27,8 @@
         <TextField fx:id="rateTextField" prefWidth="40"/>
         <Label text="Процент."/>
     </HBox>
-    <Slider fx:id="rateSlider" min="10" max="30" value="10" showTickLabels="true" showTickMarks="true" minorTickCount="4" majorTickUnit="5" snapToTicks="true" blockIncrement="0.5"/>
+
+    <Slider fx:id="rateSlider" min="10" max="30" value="10" showTickLabels="true" showTickMarks="true" minorTickCount="8" majorTickUnit="5" snapToTicks="true"/>
 
     <Label text="Срок кредита"/>
     <HBox spacing="20.0">

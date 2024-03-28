@@ -1,4 +1,4 @@
-package pi101.creditcalc;
+package pi101.creditcalc.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,7 +8,10 @@ import javafx.scene.control.TextField;
 
 import java.text.DecimalFormat;
 
-public class HelloController {
+/**
+ * Контроллер управляющий взаимодействем UI и логикой приложения
+ */
+public class CalcController {
     @FXML
     private Label welcomeText;
 
@@ -33,6 +36,10 @@ public class HelloController {
     @FXML
     private Label monthlyPaymentLabel;
 
+    /**
+     * Инициализация контроллера, устанавливает слушатели, ползунки и т.д.
+     */
+
     @FXML
     protected void initialize() {
 
@@ -52,7 +59,6 @@ public class HelloController {
                     amountSlider.setValue(value);
                 }
             } catch (NumberFormatException e) {
-                // Обработка исключения
                 amountTextField.setText(oldValue); // Возвращаем предыдущее значение
                 System.err.println("Неверное значение");
             }
@@ -70,25 +76,46 @@ public class HelloController {
         });
 
     // Процентная ставка
-        // текстовое поле
+        // Текстовое поле
         rateTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                double value = Double.parseDouble(newValue);
-                value = Math.round(value * 2) / 2.0;
-                rateSlider.setValue(value);
-            } catch (NumberFormatException e) {
+            // Проверка на ввод только чисел
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                rateTextField.setText(oldValue);
+            } else {
+                try {
+                    double value = Double.parseDouble(newValue);
+                    // Проверка находится ли введенное значение в диапазоне от 10 до 30
+                    if (value < 10) {
+                        value = 10;
+                    } else if (value > 30) {
+                        value = 30;
+                    }
+                    // Округление до ближайшего 0.5
+                    value = Math.round(value * 2) / 2.0;
+                    rateSlider.setValue(value);
+                } catch (NumberFormatException e) {
+                    rateTextField.setText(oldValue); // Возвращаем предыдущее значение
+                    System.err.println("Неверное значение");
+                }
             }
         });
 
-        // ползунок
-        rateSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            newValue = Math.round(newValue.doubleValue() * 2) / 2.0;
-            rateTextField.setText(String.valueOf(newValue));
-        });
+        // Ползунок
+            rateSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+                // Ограничение значения ползунка
+                newValue = Math.min(Math.max(newValue.doubleValue(), 10), 30);
+                // Округление до ближайшего 0.5
+                newValue = Math.round(newValue.doubleValue() * 2) / 2.0;
+                rateTextField.setText(String.valueOf(newValue));
+            });
 
     // Срок кредита
         // Поле ввода текста
         termTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Проверка на ввод только чисел
+            if (!newValue.matches("\\d*")) {
+                termTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
             try {
                 int value = Integer.parseInt(newValue);
                 termSlider.setValue(value);
@@ -101,7 +128,7 @@ public class HelloController {
             termTextField.setText(String.valueOf(newValue.intValue()));
         });
 
-        // Отключение кнопки пока не введены данные
+        // Отключение кнопки расчета пока не введены данные
         calculateButton.disableProperty().bind(
                 amountTextField.textProperty().isEmpty()
                         .or(rateTextField.textProperty().isEmpty())
@@ -109,6 +136,9 @@ public class HelloController {
         );
     }
 
+    /**
+     * Обработчик нажатия на кнопку "Расчитать"
+     */
     @FXML
     protected void onCalculateButtonClick() {
         Number amount = amountSlider.getValue();
@@ -124,7 +154,13 @@ public class HelloController {
     }
 
 
-    // Метод для расчета кредита
+    /**
+     * Метод расчета суммы кредита
+     * @param amount - сумма кредита
+     * @param rate - процентная ставка
+     * @param term - срок кредита
+     * @return - сумму ежемесячного платежа
+     */
     protected double calculateCredit(double amount, double rate, int term) {
 
         double monthlyRate = rate / 12 / 100;
