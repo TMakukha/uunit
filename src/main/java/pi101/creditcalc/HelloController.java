@@ -40,27 +40,33 @@ public class HelloController {
         // текстовое поле
         amountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                String cleanedValue = newValue.replaceAll("[^\\d]", "");
-
+                String cleanedValue = newValue.replaceAll("\\D", "");
                 double value = Double.parseDouble(cleanedValue);
-
-                DecimalFormat format = new DecimalFormat("#,###");
-                String formattedValue = format.format(value);
-
-                // Передача форматированного значения в текстовое поле
-                amountTextField.setText(formattedValue);
-
-                // Передача форматированного значения в слайдер
-                amountSlider.setValue(value);
+                // Ограничение до 500 000
+                if (value > 500000) {
+                    amountTextField.setText(oldValue);
+                } else {
+                    DecimalFormat format = new DecimalFormat("#,###");
+                    String formattedValue = format.format(value);
+                    amountTextField.setText(formattedValue);
+                    amountSlider.setValue(value);
+                }
             } catch (NumberFormatException e) {
-
+                // Обработка исключения
+                amountTextField.setText(oldValue); // Возвращаем предыдущее значение
+                System.err.println("Неверное значение");
             }
         });
 
         // ползунок
         amountSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            DecimalFormat format = new DecimalFormat("#,###");
-            amountTextField.setText(format.format(newValue.intValue()));
+            // Ограничение до 500 000
+            if (newValue.doubleValue() > 500000) {
+                amountSlider.setValue(oldValue.doubleValue());
+            } else {
+                DecimalFormat format = new DecimalFormat("#,###");
+                amountTextField.setText(format.format(newValue.intValue()));
+            }
         });
 
     // Процентная ставка
@@ -119,7 +125,7 @@ public class HelloController {
 
 
     // Метод для расчета кредита
-    private double calculateCredit(double amount, double rate, int term) {
+    protected double calculateCredit(double amount, double rate, int term) {
 
         double monthlyRate = rate / 12 / 100;
         int numberOfPayments = term;

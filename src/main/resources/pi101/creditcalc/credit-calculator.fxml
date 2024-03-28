@@ -35,7 +35,7 @@
         <Label text="Мес."/>
     </HBox>
 
-    <Slider fx:id="termSlider" min="0" max="36" value="0" showTickLabels="true" minorTickCount="5" showTickMarks="true" majorTickUnit="6"/>
+    <Slider fx:id="termSlider" min="0" max="36" value="0" showTickLabels="true" minorTickCount="5" showTickMarks="true" majorTickUnit="6" snapToTicks="true"/>
 
 
     <VBox alignment="BOTTOM_CENTER">
